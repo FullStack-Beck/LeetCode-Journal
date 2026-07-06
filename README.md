@@ -12,35 +12,66 @@ My personal tracker for mastering algorithms and data structures using Python, C
 | 07/02/2026 | 20 | [Valid Parentheses](https://leetcode.com) | 🟢 Easy | [C#](./Easy/0020-valid-parentheses.cs) | `s.IndexOf()` completely blinds code to duplicated and mixed character pairs because it only searches for the first occurrence. Structural validation requires evaluating elements based on their exact arrival sequence. A Last-In, First-Out (LIFO) **Stack** structure tracks relative order cleanly: open-bracket characters are collected via `.Push()`, and matched closing characters confirm alignment by interrogating and dropping the current sequence crown via `.Pop()`. Duplicate validation rules can fail silently due to subtle copy-paste character mutations (such as validating `c == '}'` twice instead of mapping `]`). | |
 | 07/06/2026 | 21 | [Merge Two Sorted Lists](https://leetcode.com) | 🟢 Easy | [TypeScript](./Easy/0021-merge-two-sorted-lists.ts) | Reading nested object values requires handling structural nullability constraints explicitly. Directly mutating list variables inside loops severs access history; isolated pointer replication prevents memory address orphaning. Unequal subcollection distributions leave remainder tracks that must be structurally appended outside main iterative loops to capture dangling properties. | |
 
-## 💡 Notes & Cheatsheet
+## 💡 Quick-Reference Code Snippets
 
-### String Slicing Shortcuts (Python) 0009
-* `string[::-1]` -> Reverses a string.
-* `string[start:stop:step]` -> Core slicing syntax.
-* `x % 10`: Evaluates the remainder after dividing by 10. This systematically extracts the last digit of any positive number.
-* `x // 10`: Floor divides by 10. This strips the last digit completely, cleanly reducing the length of the number.
+### Strings & Arrays
+```python
+# Python: Reverse a string or array instantly
+reversed_str = s[::-1]
 
-### Control Flow & Memory (C++) 0013
-* **`continue`**: Jumps immediately to the next iteration of a loop. Essential for skipping the second character of a matched pair (like skipping 'M' after processing 'C' in "CM").
-* **`else if` vs `if`**: Separate `if` blocks all check the same index sequentially, causing bugs. `else if` ensures only *one* matching block executes.
-* **Vector Mutation**: Class-level vectors persist across different test runs in environments like LeetCode. Local variables (`int total`) are cleaner and safer for state isolation.
-* **String Bounds**: A string of length $N$ has valid indices from `0` to `N-1`. Evaluating `s[i+1]` when `i == N-1` points to an illegal index and crashes memory. Always gate lookaheads with `i + 1 < s.length()`.
+# Python: Slice syntax layout
+sub_part = s[start:stop:step]
+```
+```java
+// Java: Check if a string starts exactly with a prefix match
+if (word.indexOf(prefix) == 0) { }
 
-### String & Array Mechanics (Java) 0014
-* **Property vs Method**: Arrays use the immutable field metadata `.length` (e.g., `strs.length`), whereas Strings call an active internal method `.length()` (e.g., `prefix.length()`).
-* **`indexOf(str) == 0`**: Serves as a perfect prefix matching check. If a substring exists but does not start at index 0, it means it is buried inside the word, not a prefix.
-* **Dynamic Truncation**: `str.substring(0, str.length() - 1)` drops exactly one character off the tail of a string. Handing an empty string to `.isEmpty()` provides a clean break condition during aggressive truncation loops.
+// Java: Drop exactly one character off the tail of a string
+prefix = prefix.substring(0, prefix.length() - 1);
 
-### Structural Order & State Tracking (C# / General) 0020
-* **First-Occurrence Blindness**: Scanning global properties or using global index matches (like `IndexOf`) fails entirely when strings contain multiple nested, interlocking, or trailing sequences (such as `(){}}{`). 
-* **LIFO Stack Engine**: Stacks operate via a Last-In, First-Out model. This makes them the ultimate structure for processing symmetric patterns or matching historical pairs.
-* **Stack State Gating**: Attempting to extract or pop from a collection when its internal element count is empty will immediately trigger a runtime exception. Always guard extractions with a `stack.Count == 0` validation check.
-* **Copy-Paste Mutation Risks**: Reusing multi-line condition blocks by copying and pasting creates silent logical traps. A single unadjusted character target (like evaluating `c == '}'` against a square bracket target) bypasses validation assertions without raising syntax warnings.
-* **Universal Concept, Local Design**: Dedicated `Stack` class APIs are available natively in managed environments (C#, Java, C++), while modern script engines (Python, JavaScript) utilize optimized native arrays/lists via append and pop hooks. Low-level environments (C) require developers to manually bind an array to a cursor tracking variable.
+// Java: Array property vs String method length syntax
+int totalItems = arr.length;
+int totalChars = str.length();
+```
 
-### Pointer Navigation & Memory Isolation (TypeScript / General) 0021
-* **Null Pointer Gatekeeping**: Statically-typed environments enforce type definitions (`ListNode | null`). Accessing child keys (like `.val` or `.next`) without wrapping code in validation filters (`if (list !== null)`) risks runtime reference errors.
-* **The "One-Way Street" Problem**: Singly-linked list nodes lack back-link properties. Advancing a unique single tracker forward drops preceding history blocks completely out of memory scope once left behind.
-* **Anchor & Mover Model**: Managing tracking lists requires separate active references: a stationary **Anchor** (Dummy Node) pinned to structural position 0 to provide a returnable point, and a fluid **Mover** (Tail pointer) that slides downward to attach subsequent entries.
-* **Pointer Redirection**: Statement lines written as isolated child properties (like `list1.next;`) represent data lookups and execute with zero mutation effects. Advancing reference frames down an object chain requires variable reassignment via assignment assignment syntax (`list1 = list1.next;`).
-* **Loop Boundary Cleanup**: Iterative loop conditions (`while (list1 && list2)`) drop out prematurely the exact moment a single resource runs empty. Evaluating remainder boundaries outside iterative conditions ensures leftover data sets remain linked when lists are of unequal lengths.
+### Math & Digits
+```python
+# Python: Extract the last digit of a number using modulo
+last_digit = x % 10
+
+# Python: Strip the last digit using floor division (keeps it an integer)
+remaining_num = x // 10
+```
+
+### Memory & Loops
+```cpp
+// C++: Skip to the next loop iteration immediately
+continue;
+
+// C++: Guard lookaheads from running out of string memory limits
+if (i + 1 < s.length()) { char nextChar = s[i+1]; }
+```
+```typescript
+// TypeScript: Move list references forward (must use assignment '=')
+list1 = list1.next;
+
+// TypeScript: Strict gatekeeping check to prevent reading null properties
+if (list1 !== null) { console.log(list1.val); }
+```
+
+---
+
+## 🧠 The Big Concepts
+
+### 1. Control Flow Rules
+* **`if` vs `else if`**: Isolated `if` statements all check the same data point sequentially. Use `else if` to guarantee only *one* matching logic path executes.
+* **Vector Mutation Pitfalls**: Class-level vectors persist across hidden test cases in platforms like LeetCode. Use local variables inside functions to keep fresh isolation state.
+
+### 2. Stack Engine (LIFO)
+* **First-Occurrence Blindness**: Global scanning methods (like `IndexOf`) fail completely when items contain mixed, nested, or mirrored duplicate pairs (e.g., `( [ ) ]`).
+* **Last-In, First-Out Matching**: Stacks process symmetric patterns by tracking arrival order. Push incoming symbols down, and pop the crown to validate pairs. Always guard extractions with an empty count check to prevent runtime exception crashes.
+
+### 3. Pointer & Linked List Architecture
+* **The One-Way Street**: Singly-linked list nodes lack back-links. Advancing a unique single reference variable forward drops preceding history completely out of memory scope.
+* **Anchor & Mover Model**: Managing output lists requires separate trackers: a stationary **Anchor** (Dummy Node) pinned at position 0 to provide a returnable point, and a fluid **Mover** (Tail pointer) that slides down to attach subsequent items.
+* **Loop Boundary Remainders**: Dual loop conditions (`while (list1 && list2)`) exit early the exact moment a single resource runs empty. Check remainder boundaries *outside* loops to link left-behind properties from unequal collections.
