@@ -13,6 +13,7 @@ My personal tracker for mastering algorithms and data structures using Python, C
 | 07/06/2026 | 21 | [Merge Two Sorted Lists](https://leetcode.com/merge-two-sorted-lists/) | 🟢 Easy | [TypeScript](./Easy/0021-merge-two-sorted-lists.ts) | Reading nested object values requires handling structural nullability constraints explicitly. Directly mutating list variables inside loops severs access history; isolated pointer replication prevents memory address orphaning. Unequal subcollection distributions leave remainder tracks that must be structurally appended outside main iterative loops to capture dangling properties. | |
 | 07/07/2026 | 26 | [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/) | 🟢 Easy | [C](./Easy/0026-remove-duplicates.c) | C arrays are fixed size sequences in memory and do not have dynamic methods like `.pop()` or properties like `.length()`. Direct array assignment (`=`) instead of an equality comparison check (`==` or `!=`) inside conditional logic introduces severe bugs. Local array variables (`int k[size]`) reside exclusively on temporary stack frames that get destroyed at function termination, meaning returning local arrays is illegal. In-place duplication filtering requires a two-pointer approach: a fast scanning index to check differences against adjacent variables (`i - 1`), and a slow write index (`unique`) that acts as a boundary pointer for modifying values in-place. | |
 | 07/08/2026 | 1 | [Two Sum](https://leetcode.com/problems/two-sum/) | 🟢 Easy | [C++](./Easy/0001-two-sum.cpp) | Concept: Nested Loop Pair MatchingA brute-force nested loop explores all unique pairs to avoid redundant self-matching by initializing the inner loop at i + 1. Calculating the target difference (target - currentnum) isolates the exact required match value ahead of time. Evaluating the inner pointer (nums[z]) directly against this pre-calculated numbercheck difference saves minor execution steps, returning the index pair {i, z} immediately upon a successful match. | |
+| 07/09/2026 | 27 | [Remove Element](https://leetcode.com/remove-element/) | 🟢 Easy | [JavaScript](./Easy/0027-remove-element.js) | In JavaScript, passing an element value instead of an index iterator (`i`) to `.splice()` corrupts the removal index, and mutating an array forward inside an `i++` loop skips the adjacent element as items shift left. In C, arrays lack automatic resizing methods, requiring a secondary inner loop to shift elements left manually. The shifting boundary condition must be bounded at `j < numsSize - 1` to prevent out-of-bounds reading (`nums[j+1]`) beyond allocated memory blocks. The two-pointer pattern optimizes this process by dropping expensive shifting loops entirely. | [C](./Easy/0027-remove-element.c) |
 
 ## 💡 Quick-Reference Code Snippets
 
@@ -44,6 +45,20 @@ puts("Text Output");
 
 // C: Safely compare raw bytes of memory across identical array data structures
 if (memcmp(array1, array2, sizeof(array1)) == 0) { }
+
+// C: Manually shift array elements one position to the left (O(n²) time)
+for (int j = i; j < numsSize - 1; j++) {
+    nums[j] = nums[j + 1];
+}
+
+// C: Two-pointer technique for in-place array deletion (O(n) time, O(1) space)
+int k = 0; 
+for (int i = 0; i < numsSize; i++) {
+    if (nums[i] != val) {
+        nums[k] = nums[i];
+        k++;
+    }
+}
 ```
 
 ### Math & Digits
@@ -117,6 +132,7 @@ int* ptr = nullptr;
 * **Value Identity Limits**: Running `array1 == array2` evaluates the absolute **memory locations** where the arrays are stored, not their content. Deep array equivalence requires sequential validation loops or checking the byte stream footprint with `memcmp`.
 * **Stack Lifespan Expiration**: Declaring explicit local arrays within a function context (`int k[size]`) places that memory allocation directly onto the transient execution stack. When the runtime passes a `return` keyword, the underlying stack frame vanishes, rendering returned pointers to local arrays illegal.
 * **The Two-Pointer In-Place Refactoring**: Mutating continuous data spaces under fixed memory allocations uses separate reader and writer indices. Setting the initial element as a fixed unique anchor allows the scanning pointer to evaluate next-door items (`i - 1`) for layout mutations while the slow pointer overwrites records sequentially.
+* **The Skipped Index Trap**: Deleting elements inside a forward-moving loop (i++) reduces the array's size and shifts elements to the left. The element immediately following the deleted item moves into the current index position and gets skipped on the next iteration. Fix this by decrementing the index (i--) or iterating backward from nums.length - 1.
 
 ### 5. Time-Space Complexity Trade-offs (Searching & Lookups)
 * **Brute-Force Nested Loops (`O(n²)` Time)**: Searching pairs by pinning an outer pointer and sweeping an inner pointer (`z = i + 1`) eliminates self-matching errors but creates huge computational delays as data arrays grow. 
