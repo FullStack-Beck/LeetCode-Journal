@@ -1,6 +1,6 @@
 # 🚀 LeetCode Progress Journal
 
-My personal tracker for mastering algorithms and data structures using Python, C++, and Java.
+My personal tracker for mastering algorithms and data structures using Python, C++, JavaScript, C#, TypeScript, C, and Java.
 
 ## 📊 Progress Dashboard
 
