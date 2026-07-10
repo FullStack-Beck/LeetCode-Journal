@@ -16,147 +16,510 @@ My personal tracker for mastering algorithms and data structures using Python, C
 | 07/09/2026 | 27 | [Remove Element](https://leetcode.com/remove-element/) | 🟢 Easy | [JavaScript](./Easy/0027-remove-element.js) | In JavaScript, passing an element value instead of an index iterator (`i`) to `.splice()` corrupts the removal index, and mutating an array forward inside an `i++` loop skips the adjacent element as items shift left. In C, arrays lack automatic resizing methods, requiring a secondary inner loop to shift elements left manually. The shifting boundary condition must be bounded at `j < numsSize - 1` to prevent out-of-bounds reading (`nums[j+1]`) beyond allocated memory blocks. The two-pointer pattern optimizes this process by dropping expensive shifting loops entirely. | [C](./Easy/0027-remove-element.c) |
 | 07/10/2026 | 28 | [Find the Index of the First Occurrence in a String](https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/) | 🟢 Easy | [TypeScript](./Easy/0028-find-index-first-occurrence.ts) | Sliding window loop limit optimization avoids searching index spaces where the remaining `haystack` length is smaller than the `needle`. TypeScript leverages `.substring(i, i + len)` for clean high-level comparisons, whereas C requires an inner sliding pointer `j` to manually verify byte alignments step-by-step. | [C](./Easy/0028-find-index-first-occurrence.c) |
 
-## 💡 Quick-Reference Code Snippets
+# 📖 Problem → Concepts
 
-### Strings & Arrays
-```python
-# Python: Reverse a string or array instantly
-reversed_str = s[::-1]
+| If the problem says... | Think... |
+|------------------------|----------|
+| Compare strings | Length, character access, comparison |
+| Substring | Sliding window, indexing |
+| First occurrence | Sliding window, nested loop |
+| Remove duplicates | Two pointers |
+| Merge sorted arrays/lists | Two pointers |
+| Reverse | Two pointers |
+| Find pair | Hash Map or Nested Loops |
+| Matching brackets | Stack |
+| Frequency count | Hash Map |
+| Palindrome | Two pointers |
+| Sorted array | Binary Search or Two Pointers |
+| Smallest/Largest | Running min/max |
+| Level order traversal | Queue (BFS) |
+| Tree paths | DFS |
+| Shortest path | BFS |
+| All combinations | Backtracking |
+| Optimization | Dynamic Programming |
 
-# Python: Slice syntax layout
-sub_part = s[start:stop:step]
+---
+
+# 🔤 STRINGS
+
+---
+
+## Get Length
+
+| Language | Syntax |
+|-----------|---------|
+| Python | `len(s)` |
+| C++ | `s.length()` |
+| Java | `s.length()` |
+| C# | `s.Length` |
+| JavaScript | `s.length` |
+| TypeScript | `s.length` |
+| C | `strlen(s)` |
+
+### Concept
+
+You usually need the length before indexing or looping.
+
+---
+
+## Character Access
+
+| Language | Syntax |
+|-----------|---------|
+| Python | `s[i]` |
+| C++ | `s[i]` |
+| Java | `s.charAt(i)` |
+| C# | `s[i]` |
+| JavaScript | `s[i]` |
+| TypeScript | `s[i]` |
+| C | `s[i]` |
+
+### Concept
+
+Almost every string algorithm eventually becomes:
+
 ```
-```java
-// Java: Check if a string starts exactly with a prefix match
-if (word.indexOf(prefix) == 0) { }
-
-// Java: Drop exactly one character off the tail of a string
-prefix = prefix.substring(0, prefix.length() - 1);
-
-// Java: Array property vs String method length syntax
-int totalItems = arr.length;
-int totalChars = str.length();
-```
-```
-// TypeScript: Find first substring match via slicing window optimization
-for (let i = 0; i <= haystack.length - needle.length; i++) {
-    if (haystack.substring(i, i + needle.length) === needle) return i;
-}
-```
-
-```c
-// C: Explicitly format integers using format specifiers and manually add newlines
-printf("%d\n", nums[i]);
-
-// C: Output raw string blocks with an automatic built-in trailing newline
-puts("Text Output");
-
-// C: Safely compare raw bytes of memory across identical array data structures
-if (memcmp(array1, array2, sizeof(array1)) == 0) { }
-
-// C: Manually shift array elements one position to the left (O(n²) time)
-for (int j = i; j < numsSize - 1; j++) {
-    nums[j] = nums[j + 1];
-}
-
-// C: Two-pointer technique for in-place array deletion (O(n) time, O(1) space)
-int k = 0; 
-for (int i = 0; i < numsSize; i++) {
-    if (nums[i] != val) {
-        nums[k] = nums[i];
-        k++;
-    }
-}
-
-// C: Manual sliding window substring search (O(n * m) time)
-for (int i = 0; i <= strlen(haystack) - strlen(needle); i++) {
-    int j = 0;
-    while (j < strlen(needle) && haystack[i + j] == needle[j]) {
-        j++;
-    }
-    if (j == strlen(needle)) return i;
-}
-```
-
-### Math & Digits
-```python
-# Python: Extract the last digit of a number using modulo
-last_digit = x % 10
-
-# Python: Strip the last digit using floor division (keeps it an integer)
-remaining_num = x // 10
-```
-
-### Memory & Loops
-```cpp
-// C++: Skip to the next loop iteration immediately
-continue;
-
-// C++: Guard lookaheads from running out of string memory limits
-if (i + 1 < s.length()) { char nextChar = s[i+1]; }
-
-// C++: Nested loop pair matching (O(n²) time, O(1) space)
-for (int i = 0; i < nums.size(); i++) {
-    int numbercheck = target - nums[i];
-    for (int z = i + 1; z < nums.size(); z++) {
-        if (nums[z] == numbercheck) return {i, z};
-    }
-}
-
-// C++: Single-pass hash map lookup (O(n) time, O(n) space)
-std::unordered_map<int, int> seen;
-for (int i = 0; i < nums.size(); i++) {
-    int complement = target - nums[i];
-    if (seen.find(complement) != seen.end()) return {seen[complement], i};
-    seen[nums[i]] = i;
-}
-```
-```typescript
-// TypeScript: Move list references forward (must use assignment '=')
-list1 = list1.next;
-
-// TypeScript: Strict gatekeeping check to prevent reading null properties
-if (list1 !== null) { console.log(list1.val); }
-```
-```c
-// C: Standard preprocessor macro definitions representing a null pointer constant
-#define NULL ((void *)0) 
-#define NULL 0           
-
-// C23: Modern native core language type-safe null pointer keyword
-int* ptr = nullptr;
+Compare character A to character B.
 ```
 
 ---
 
-## 🧠 The Big Concepts
+## Compare Entire Strings
 
-### 1. Control Flow Rules
-* **`if` vs `else if`**: Isolated `if` statements all check the same data point sequentially. Use `else if` to guarantee only *one* matching logic path executes.
-* **Vector Mutation Pitfalls**: Class-level vectors persist across hidden test cases in platforms like LeetCode. Use local variables inside functions to keep fresh isolation state.
+| Language | Syntax |
+|-----------|---------|
+| Python | `a == b` |
+| C++ | `a == b` |
+| Java | `a.equals(b)` |
+| C# | `a == b` |
+| JavaScript | `a === b` |
+| TypeScript | `a === b` |
+| C | `strcmp(a,b)==0` |
 
-### 2. Stack Engine (LIFO)
-* **First-Occurrence Blindness**: Global scanning methods (like `IndexOf`) fail completely when items contain mixed, nested, or mirrored duplicate pairs (e.g., `( [ ) ]`).
-* **Last-In, First-Out Matching**: Stacks process symmetric patterns by tracking arrival order. Push incoming symbols down, and pop the crown to validate pairs. Always guard extractions with an empty count check to prevent runtime exception crashes.
+### Concept
 
-### 3. Pointer & Linked List Architecture
-* **The One-Way Street**: Singly-linked list nodes lack back-links. Advancing a unique single reference variable forward drops preceding history completely out of memory scope.
-* **Anchor & Mover Model**: Managing output lists requires separate trackers: a stationary **Anchor** (Dummy Node) pinned at position 0 to provide a returnable point, and a fluid **Mover** (Tail pointer) that slides down to attach subsequent items.
-* **Loop Boundary Remainders**: Dual loop conditions (`while (list1 && list2)`) exit early the exact moment a single resource runs empty. Check remainder boundaries *outside* loops to link left-behind properties from unequal collections.
+Checks whether two strings contain the same characters.
 
-### 4. Memory & C-Array Subsystems
-* **The Invisible Length Constraint**: Arrays in C are simple pointer references to block memory sequences. They store no metadata parameters like `.length`. Array size requirements must always be tracked manually or passed as an independent function parameter (`numsSize`).
-* **Value Identity Limits**: Running `array1 == array2` evaluates the absolute **memory locations** where the arrays are stored, not their content. Deep array equivalence requires sequential validation loops or checking the byte stream footprint with `memcmp`.
-* **Stack Lifespan Expiration**: Declaring explicit local arrays within a function context (`int k[size]`) places that memory allocation directly onto the transient execution stack. When the runtime passes a `return` keyword, the underlying stack frame vanishes, rendering returned pointers to local arrays illegal.
-* **The Two-Pointer In-Place Refactoring**: Mutating continuous data spaces under fixed memory allocations uses separate reader and writer indices. Setting the initial element as a fixed unique anchor allows the scanning pointer to evaluate next-door items (`i - 1`) for layout mutations while the slow pointer overwrites records sequentially.
-* **The Skipped Index Trap**: Deleting elements inside a forward-moving loop (i++) reduces the array's size and shifts elements to the left. The element immediately following the deleted item moves into the current index position and gets skipped on the next iteration. Fix this by decrementing the index (i--) or iterating backward from nums.length - 1.
+---
 
-### 5. Time-Space Complexity Trade-offs (Searching & Lookups)
-* **Brute-Force Nested Loops (`O(n²)` Time)**: Searching pairs by pinning an outer pointer and sweeping an inner pointer (`z = i + 1`) eliminates self-matching errors but creates huge computational delays as data arrays grow. 
-* **Hash Map Lookups (`O(n)` Time)**: Storing visited elements inside an `std::unordered_map` layout exchanges a small memory footprint (`O(n)` Space) for instant retrieval. 
-* **The Complement Strategy**: Instead of searching for arbitrary pairings, calculating the specific required difference value upfront (`target - currentnum`) transforms an open-ended search into a direct, exact-match verification problem using `.find()`.
+## Compare Part of a String
 
-### 6. Sliding Window Optimization
-* **Loop Boundary Truncation**: When looking for a substring (needle) inside a main string (haystack), running the outer loop up to haystack.length is redundant. Restricting the boundary to haystack.length - needle.length ensures the engine never wastes iterations over terminal sections that physically lack the capacity to fit the target substring.
+Python
 
-* **High-Level Abstraction vs Manual Evaluation**: Modern typed architectures like TypeScript hide character-by-character processing behind memory-managed methods like .substring(). Lower-level environments like C require an explicit nested validation variable (j) that acts as a local alignment tracker to confirm structural equality across adjacent memory blocks.
+```python
+s[start:end]
+```
+
+C++
+
+```cpp
+s.substr(start,length)
+```
+
+Java
+
+```java
+s.substring(start,end)
+```
+
+JavaScript / TypeScript
+
+```javascript
+s.substring(start,end)
+```
+
+C
+
+```c
+for(int i=0;i<len;i++)
+{
+    if(a[start+i]!=b[i])
+    {
+        // mismatch
+    }
+}
+```
+
+### Concept
+
+Sometimes you compare a section of a string instead of the whole string.
+
+---
+
+## Find Character
+
+| Language | Syntax |
+|-----------|---------|
+| Python | `s.find('a')` |
+| C++ | `s.find('a')` |
+| Java | `s.indexOf('a')` |
+| C# | `s.IndexOf('a')` |
+| JavaScript | `s.indexOf('a')` |
+| TypeScript | `s.indexOf('a')` |
+| C | `strchr(s,'a')` |
+
+---
+
+## Find Substring
+
+| Language | Syntax |
+|-----------|---------|
+| Python | `s.find(word)` |
+| C++ | `s.find(word)` |
+| Java | `s.indexOf(word)` |
+| C# | `s.IndexOf(word)` |
+| JavaScript | `s.indexOf(word)` |
+| TypeScript | `s.indexOf(word)` |
+| C | `strstr(s,word)` |
+
+### Concept
+
+Locate where one string appears inside another.
+
+---
+
+## Copy Strings
+
+| Language | Syntax |
+|-----------|---------|
+| Python | `b = a` |
+| C++ | `string b = a;` |
+| Java | `String b = a;` |
+| C# | `string b = a;` |
+| JavaScript | `let b = a;` |
+| TypeScript | `let b = a;` |
+| C | `strcpy(dest,src)` |
+
+---
+
+## Concatenate Strings
+
+| Language | Syntax |
+|-----------|---------|
+| Python | `a+b` |
+| C++ | `a+b` |
+| Java | `a+b` |
+| C# | `a+b` |
+| JavaScript | `a+b` |
+| TypeScript | `a+b` |
+| C | `strcat(dest,src)` |
+
+---
+
+# 📦 ARRAYS
+
+---
+
+## Length
+
+| Language | Syntax |
+|-----------|---------|
+| Python | `len(arr)` |
+| C++ | `arr.size()` |
+| Java | `arr.length` |
+| C# | `arr.Length` |
+| JavaScript | `arr.length` |
+| TypeScript | `arr.length` |
+| C | Must be tracked manually |
+
+---
+
+## Access Element
+
+```text
+arr[index]
+```
+
+Works in every language.
+
+---
+
+## Last Element
+
+Python
+
+```python
+arr[-1]
+```
+
+Everything else
+
+```text
+arr[length-1]
+```
+
+---
+
+## Append
+
+| Language | Syntax |
+|-----------|---------|
+| Python | `append()` |
+| C++ | `push_back()` |
+| Java | `add()` |
+| C# | `Add()` |
+| JavaScript | `push()` |
+| TypeScript | `push()` |
+| C | Manual assignment |
+
+---
+
+## Remove Last
+
+| Language | Syntax |
+|-----------|---------|
+| Python | `pop()` |
+| C++ | `pop_back()` |
+| Java | `remove(size-1)` |
+| C# | `RemoveAt()` |
+| JavaScript | `pop()` |
+| TypeScript | `pop()` |
+| C | Manual |
+
+---
+
+## Insert
+
+Most languages
+
+```text
+insert(index,value)
+```
+
+C
+
+```c
+Shift everything right manually.
+```
+
+---
+
+## Delete
+
+Most languages
+
+```text
+remove(index)
+```
+
+C
+
+```c
+Shift everything left manually.
+```
+
+---
+
+# 🔁 LOOPS
+
+---
+
+## For Loop
+
+Every language supports one.
+
+---
+
+## While Loop
+
+Every language supports one.
+
+---
+
+## Continue
+
+Skip current iteration.
+
+---
+
+## Break
+
+Exit loop immediately.
+
+---
+
+## Nested Loop
+
+Used when comparing every element to every other element.
+
+Example:
+
+```
+for each i
+    for each j
+```
+
+Time Complexity
+
+```
+O(n²)
+```
+
+---
+
+# 👉 POINTERS
+
+---
+
+## Reference
+
+Stores an address.
+
+---
+
+## Dereference
+
+```c
+*ptr
+```
+
+Gets the value.
+
+---
+
+## Address Of
+
+```c
+&variable
+```
+
+Gets memory address.
+
+---
+
+## Null Pointer
+
+| Language | Syntax |
+|-----------|---------|
+| Python | `None` |
+| Java | `null` |
+| JavaScript | `null` |
+| C# | `null` |
+| C++ | `nullptr` |
+| C | `NULL` |
+
+---
+
+## Allocate Memory
+
+C
+
+```c
+malloc()
+```
+
+C++
+
+```cpp
+new
+```
+
+---
+
+## Free Memory
+
+C
+
+```c
+free(ptr)
+```
+
+C++
+
+```cpp
+delete ptr
+```
+
+---
+
+# 🗂 HASH MAPS
+
+---
+
+## Create
+
+Python
+
+```python
+{}
+```
+
+C++
+
+```cpp
+unordered_map
+```
+
+Java
+
+```java
+HashMap
+```
+
+C#
+
+```csharp
+Dictionary
+```
+
+JavaScript
+
+```javascript
+Map
+```
+
+TypeScript
+
+```typescript
+Map
+```
+
+C
+
+Manual implementation required.
+
+---
+
+## Insert
+
+```
+map[key]=value
+```
+
+---
+
+## Lookup
+
+```
+map[key]
+```
+
+---
+
+## Exists?
+
+Python
+
+```python
+key in map
+```
+
+C++
+
+```cpp
+find()
+```
+
+Java
+
+```java
+containsKey()
+```
+
+JavaScript
+
+```javascript
+has()
+```
+
+---
