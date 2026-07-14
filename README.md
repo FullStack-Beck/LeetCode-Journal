@@ -16,6 +16,7 @@ My personal tracker for mastering algorithms and data structures using Python, C
 | 07/09/2026 | 27 | [Remove Element](https://leetcode.com/remove-element/) | 🟢 Easy | [JavaScript](./Easy/0027-remove-element.js) | In JavaScript, passing an element value instead of an index iterator (`i`) to `.splice()` corrupts the removal index, and mutating an array forward inside an `i++` loop skips the adjacent element as items shift left. In C, arrays lack automatic resizing methods, requiring a secondary inner loop to shift elements left manually. The shifting boundary condition must be bounded at `j < numsSize - 1` to prevent out-of-bounds reading (`nums[j+1]`) beyond allocated memory blocks. The two-pointer pattern optimizes this process by dropping expensive shifting loops entirely. | [C](./Easy/0027-remove-element.c) |
 | 07/10/2026 | 28 | [Find the Index of the First Occurrence in a String](https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/) | 🟢 Easy | [TypeScript](./Easy/0028-find-index-first-occurrence.ts) | Sliding window loop limit optimization avoids searching index spaces where the remaining `haystack` length is smaller than the `needle`. TypeScript leverages `.substring(i, i + len)` for clean high-level comparisons, whereas C requires an inner sliding pointer `j` to manually verify byte alignments step-by-step. | [C](./Easy/0028-find-index-first-occurrence.c) |
 | 07/13/2026 | 28 | [Search Insert Position](https://leetcode.com/problems/search-insert-position/) | 🟢 Easy | [JavaScript](./Easy/0035-search-insert-position.js) | Sequential search naturally solves insertion problems by checking for both equality and the first element greater than the target. Array boundaries must be handled explicitly—if no existing value is greater than or equal to the target, the correct insertion point is immediately after the final element (nums.length). Traversing one index beyond the last valid element (i <= nums.length) is only safe when the out-of-bounds access is never dereferenced before the boundary check. To else if statement doesnt require the && because that already is checked by the previous if and is redundant |  |
+| 07/14/2026 | 58 | [Length of Last Word](https://leetcode.com/length-of-last-word) | 🟢 Easy | [C](./Easy/0058-length-of-last-word.c) | In C, memory constraints favor a backward scanning loop ($O(1)$ space) that manually bypasses trailing spaces via index decrementing (`i--`) before counting word characters. In JavaScript, high-level string manipulation allows a clean abstraction pipeline: `.trim()` eliminates edge whitespace, and `.split(' ')` partitions the string into an array, allowing direct length access of the final element via `words[words.length - 1].length`. | [JavaScript](./Easy/0058-length-of-last-word.js) |
 
 # 📖 Problem → Concepts
 
@@ -38,6 +39,7 @@ My personal tracker for mastering algorithms and data structures using Python, C
 | Shortest path | BFS |
 | All combinations | Backtracking |
 | Optimization | Dynamic Programming |
+| Length of last word | Backward iteration (C) / Trim & Split (JS) |
 
 ---
 
@@ -74,6 +76,32 @@ You usually need the length before indexing or looping.
 | JavaScript | `s[i]` |
 | TypeScript | `s[i]` |
 | C | `s[i]` |
+
+## Trim Whitespace
+
+| Language | Syntax |
+|-----------|---------|
+| Python | `s.strip()` |
+| C++ | *No built-in (Requires manual loop / regex)* |
+| Java | `s.trim()` |
+| C# | `s.Trim()` |
+| JavaScript | `s.trim()` |
+| TypeScript | `s.trim()` |
+| C | *No built-in (Requires manual index tracking)* |
+
+---
+
+## Split Strings (By Space)
+
+| Language | Syntax |
+|-----------|---------|
+| Python | `s.split()` |
+| C++ | `stringstream ss(s);` |
+| Java | `s.split(" ")` |
+| C# | `s.Split(' ')` |
+| JavaScript | `s.split(' ')` |
+| TypeScript | `s.split(' ')` |
+| C | `strtok(s, " ")` *(Note: mutates the original string)* |
 
 ### Concept
 
