@@ -53,7 +53,7 @@ My personal tracker for mastering algorithms and data structures using Python, C
 |-----------|---------|
 | Python | `len(s)` |
 | C++ | `s.length()` |
-| Java | `s.length()` |
+| Java | `s.length` |
 | C# | `s.Length` |
 | JavaScript | `s.length` |
 | TypeScript | `s.length` |
