@@ -18,6 +18,10 @@ My personal tracker for mastering algorithms and data structures using Python, C
 | 07/13/2026 | 28 | [Search Insert Position](https://leetcode.com/problems/search-insert-position/) | 🟢 Easy | [JavaScript](./Easy/0035-search-insert-position.js) | Sequential search naturally solves insertion problems by checking for both equality and the first element greater than the target. Array boundaries must be handled explicitly—if no existing value is greater than or equal to the target, the correct insertion point is immediately after the final element (nums.length). Traversing one index beyond the last valid element (i <= nums.length) is only safe when the out-of-bounds access is never dereferenced before the boundary check. To else if statement doesnt require the && because that already is checked by the previous if and is redundant |  |
 | 07/14/2026 | 58 | [Length of Last Word](https://leetcode.com/length-of-last-word) | 🟢 Easy | [C](./Easy/0058-length-of-last-word.c) | In C, memory constraints favor a backward scanning loop ($O(1)$ space) that manually bypasses trailing spaces via index decrementing (`i--`) before counting word characters. In JavaScript, high-level string manipulation allows a clean abstraction pipeline: `.trim()` eliminates edge whitespace, and `.split(' ')` partitions the string into an array, allowing direct length access of the final element via `words[words.length - 1].length`. | [JavaScript](./Easy/0058-length-of-last-word.js) |
 
+| 07/15/2026 | 66 | [Plus One](https://leetcode.com/plus-one) | 🟢 Easy | [Java](./Easy/0066-plus-one.java) | Reverse loops (`digits.length - 1 down to 0`) avoid `ArrayIndexOutOfBoundsException` by matching 0-indexed layout sizes. Modulo 10 (`% 10`) handles digits rollover ($9 \rightarrow 0$) natively. When all digits roll over (e.g., $999 \rightarrow 000$), a new array size `n + 1` with a leading `1` must be initialized to safely hold the expanded value carry-over. | [JavaScript](./Easy/0066-plus-one.js/add-binary) |
+| 07/16/2026 | 67 | [Add Binary](https://leetcode.com) | 🟢 Easy | [JavaScript](./Easy/0067-add-binary.js) | Treating binary strings as raw JavaScript numbers breaks down due to bit precision loss on long inputs. String evaluation requires independent right-to-left tracking pointers (`i`, `j`) decremented manually. Column arithmetic sums (`digitA + digitB + carry`) dictate structural updates: sums of 2 or 3 carry a `1` to the next column, while string additions must prepend results to the front (`result = bit + result`) to prevent reverse string mutation bugs. | |
+
+
 # 📖 Problem → Concepts
 
 | If the problem says... | Think... |
@@ -40,6 +44,8 @@ My personal tracker for mastering algorithms and data structures using Python, C
 | All combinations | Backtracking |
 | Optimization | Dynamic Programming |
 | Length of last word | Backward iteration (C) / Trim & Split (JS) |
+| Addition / Large numbers | Reverse pointer iteration, Tracking column carry-over |
+
 
 ---
 
